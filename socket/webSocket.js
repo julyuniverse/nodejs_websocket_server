@@ -15,7 +15,7 @@ module.exports = () => {
             ws.userNumber = userInfo.userNumber;
             console.log(ws.userNumber + " 클라이언트 접속");
 
-            userController.getUserInfo()
+            userController.getUserInfo(ws.userNumber)
             .then((rows) => {
                 console.log(rows);
             })
