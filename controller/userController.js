@@ -1,16 +1,18 @@
-const dbConn = require('../database/mariadbConn');
+const dbConn = require('../database/mysqlConn');
 
 // 유저 정보
-async function GetUserInfo() {
-    let conn, rows;
+const GetUserInfo = async () => {
+    const conn = await dbConn.pool.getConnection();
     try {
-        conn = await dbConn.pool.getConnection();
-        rows = await conn.query('select * from LOGIN_ID_PROFILE where NO = 1;');
-    } catch(err) {
+        const [row, fields] = await conn.query(
+            "select * from LOGIN_ID_PROFILE where NO = ?",
+            [1]
+        );
+        return row;
+    } catch (err) {
         throw err;
     } finally {
-        if(conn) conn.end();
-        return rows;
+        conn.release();
     }
 }
 
