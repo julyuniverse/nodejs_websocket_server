@@ -18,6 +18,7 @@ module.exports = () => {
                 console.log(`[${ws.userNumber}] 사용자 접속`);
             }
 
+            // 사용자 정보
             userController.getUserInfo(ws.userNumber)
                 .then((rows) => {
                     console.log(rows);
