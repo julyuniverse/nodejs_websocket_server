@@ -3,6 +3,7 @@ const dbConn = require('../database/mysqlConn');
 // 로그인
 const login = async (id, pw) => {
     const conn = await dbConn.pool.getConnection();
+    let data = new Object(); // json 객체 생성
 
     try {
         await conn.beginTransaction(); // Start Transaction
@@ -26,12 +27,22 @@ const login = async (id, pw) => {
                 `select * from LOGIN_ID where id = ? and pw = ?;`,
                 [id, pw]
             );
-            return { "success": 1 }; // 로그인 성공
+            data.success = 1;
+            data.userNumber = row2[0].NO;
+
+            return data;
         } else {
+            data = new Object(); // json 객체 초기화
             if (id_cnt == 0) {
-                return { "success": 0, "error_code": 1 }; // id가 없음
+                data.success = 0;
+                data.error_code = 1; // id가 없음
+
+                return data;
             } else if (pw_cnt == 0) {
-                return { "success": 0, "error_code": 2 }; // 비밀번호가 틀림
+                data.success = 0;
+                data.error_code = 2; // 비밀번호가 틀림
+
+                return data;
             }
         }
 

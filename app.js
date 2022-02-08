@@ -7,19 +7,18 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 
-// Controller
+// Controllers
 const authController = require('./controller/authController');
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
 });
 
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', (req, res) => { // 계정 확인
     const { id, pw } = req.body;
 
     authController.login(id, pw)
         .then((rows) => {
-            console.log(rows);
             res.json(rows);
         })
         .catch((err) => {
